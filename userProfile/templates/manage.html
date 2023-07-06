@@ -1,0 +1,120 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block 'head' %} 
+    <link href="{% static 'profile/css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'profile/css/manage.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block 'body' %}
+    <br>
+    <br>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <div class="row">
+            <div class="col-md-5">
+                <p class="fonte-destaque">Your Accounts</p>
+                <hr>
+
+                <div class="contas">
+
+                        <div class="lista-contas-main">
+                            {% for account in accounts %}
+                            <span><img width="10%" src="{{account.icon.url}}">&nbsp&nbsp{{account.name}}</span>
+                            <span class="total-conta positivo ">R$ {{account.value|floatformat:2}}&nbsp&nbsp&nbsp <a href="{% url 'delete_account' account.id %}"><img width="30%" src="{% static 'profile/img/exit.png' %}"></a></span>
+                            <br>
+                            {% endfor %}
+                        </div>
+                        <br>
+                    
+                    
+                </div>
+
+                <hr>
+                <span class="fonte-destaque">Total:</span>
+                <span class="positivo total-conta font-destaque">R$ {{total|floatformat:2}}&nbsp&nbsp</span>
+            </div>
+
+            <div class="col-md-2"></div>
+
+            <div class="col-md-5">
+                <p class="fonte-destaque">New Account</p>
+                
+                <form action="{% url 'register_account' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label>Nickname</label>
+                    <input type="text" name="name" class="form-control" placeholder="">
+                    <br>
+                    <label>Bank</label>
+                    <select name="bank" class="form-select">
+                        <option value="NU">Nubank</option>
+                    </select>
+                    <br>
+                    <label>Type</label>
+                    <select name="type" class="form-select">
+                        <option value="PF">Pessoa física</option>
+                        <option value="PJ">Pessoa jurídica</option>
+                    </select>
+                    <br>
+                    <label>Value</label>
+                    <input type="number" step="0.01" name="value" class="form-control" placeholder="">
+                    <br>
+                    <input type="file" placeholder="Ícone" name="icon" required>
+                    <br>
+                    <br>
+                    <input style="width: 100%" type="submit" class="botao-principal" value="Send">
+                </form>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-5">
+                <span class="fonte-destaque">New category</span>
+
+                <form action="{% url 'create_category' %}" method="POST">{% csrf_token %}
+                    <label>Category</label>
+                    <input type="text" name="category" class="form-control">
+                    <br>
+
+                    <input type="checkbox" name="essencial" value="essencial"><label class="positivo">&nbspEssencial</label>
+                    <br>
+                    <br>
+                    <input style="width: 100%" type="submit" class="botao-principal" value="Add">
+                </form>
+            </div>
+
+            <div class="col-md-2">
+            </div>
+
+            <div class="col-md-5">
+                <span class="fonte-destaque">Your categories</span>
+                <br>
+                <div class="contas">
+
+                    
+                        <div class="lista-contas-main">
+
+                            {% for category in categories %}
+                                <span>{{category.name}}</span>
+                                {% if category.isEssencial  %}
+                                <span class="total-conta">Essencial <a href="#"><img src="#"></a></span>
+                                {% else %}
+                                <span class="total-conta">Not Essencial <a href="#"><img src="#"></a></span>
+                                {% endif %}
+                                <hr>
+                            {% endfor %}
+                        </div>
+                        <br>
+                   
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
