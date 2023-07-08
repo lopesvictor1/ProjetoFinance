@@ -4,17 +4,24 @@ from django.contrib import messages
 from .models import Account, Category
 from django.contrib.messages import constants as message_constants
 from django.db.models import Sum
+from . import utils
 
 
 
 def profileHome(request):
-    return render(request, 'home.html')
+    accounts = Account.objects.all()
+
+    total = utils.value_sum(accounts, 'value')
+
+    context = {'accounts': accounts}
+    
+    return render(request, 'home.html', context)
 
 def profileManage(request):
     accounts = Account.objects.all()
     categories = Category.objects.all()
 
-    total = accounts.aggregate(Sum('value')).get("value__sum")
+    total = utils.value_sum(accounts, 'value')
     print(total)
 
     context = {'accounts': accounts, 'total' : total, 'categories': categories}
@@ -73,4 +80,16 @@ def create_category(request):
 
         messages.add_message(request, message_constants.SUCCESS, f"The category {name} have been addedd successfully!")
 
+    return redirect('manage')
+
+
+def update_category(request, pk):
+    category = Category.objects.get(id=pk)
+    if category.isEssencial:
+        category.isEssencial = False
+    else:
+        category.isEssencial = True
+    
+    category.save()
+    
     return redirect('manage')

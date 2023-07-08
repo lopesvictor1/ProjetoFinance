@@ -58,13 +58,15 @@
                     <span class="fonte-destaque">Suas contas</span>
 
                     <div class="div-contas">
-                        
-                            <div class="lista-conta">
-                                <span>Nubank</span>
-                                <span class="total-conta">R$ 3.000,00</span>
-                            </div>
-                            <br>
-                        
+
+
+                        {% for account in accounts %}
+                        <div class="lista-conta">
+                            <span>{{account.name}}</span>
+                            <span class="total-conta">R$ {{account.value|floatformat:2}}</span>
+                        </div>
+                        <br>
+                        {% endfor %}
                         
                         
                     </div>
@@ -111,7 +113,7 @@
                         <span class="fonte-destaque">Planejamento</span>
                     </div>
                     <hr class="hr-borda">
-                    <a href="#" class="botao-principal">Definir planejamento</a>
+                    <a href="{% url 'set_planning' %}" class="botao-principal">Definir planejamento</a>
                 </div>
             </div>
             <div class="col-md-8">

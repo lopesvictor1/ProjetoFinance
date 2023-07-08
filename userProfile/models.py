@@ -1,16 +1,25 @@
 from django.db import models
-
-# Create your models here.
-from django.contrib import admin
+from datetime import datetime
 
 class Category(models.Model):
     name = models.CharField(max_length=200)
     isEssencial = models.BooleanField(default=False)
-    intended_value = models.FloatField(default=0)
+    planning_value = models.FloatField(default=0)
 
 
     def __str__(self):
         return self.name
+
+    def monthly_total(self):
+        from extract.models import Inputs_outputs
+        ios = Inputs_outputs.objects.filter(category__id=self.id).filter(date__month=datetime.now().month).filter(type='O')
+        total = 0
+        for io in ios:
+            total += io.value
+        return total
+    
+    def percentual_of_planned(self):
+        return int((self.monthly_total()*100)/self.planning_value)
 
 
 class Account(models.Model):

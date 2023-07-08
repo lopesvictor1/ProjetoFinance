@@ -1,0 +1,35 @@
+{% load static %}
+
+<div class="card">
+    
+    <table>
+        <tr>
+            <th>Account</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Value</th>
+            
+        </tr>
+        {% for io in ios %}
+            <tr class="linha">
+                <td width="10%">{{io.account}}</td>
+                <td>{{io.category}}</td>
+                <td>{{io.date}}</td>
+                <td>
+                {% if io.type == 'O'%}
+                    <img width="20%" src="{% static 'profile/img/saidas.png' %}">
+                {% else %}
+                    <img width="20%" src="{% static 'profile/img/entradas.png' %}">
+                {% endif %}
+                
+                </td>
+                <td>R$ {{io.value}}</td>
+                
+            </tr>
+        {% endfor %}
+
+    </table>
+    
+
+</div>

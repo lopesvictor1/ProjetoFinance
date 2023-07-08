@@ -103,9 +103,9 @@
                             {% for category in categories %}
                                 <span>{{category.name}}</span>
                                 {% if category.isEssencial  %}
-                                <span class="total-conta">Essencial <a href="#"><img src="#"></a></span>
+                                <span class="total-conta">Essencial <a href="{% url 'update_category' category.id %}"><img width="30%" src="{% static 'profile/img/check.png' %}"></a></span>
                                 {% else %}
-                                <span class="total-conta">Not Essencial <a href="#"><img src="#"></a></span>
+                                <span class="total-conta">Not Essencial <a href="{% url 'update_category' category.id %}"><img width="25%" src="{% static 'profile/img/exit.png' %}"></a></span>
                                 {% endif %}
                                 <hr>
                             {% endfor %}

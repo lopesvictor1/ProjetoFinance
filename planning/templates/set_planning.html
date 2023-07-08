@@ -1,0 +1,61 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block 'head' %}
+
+    <link href="{% static 'profile/css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'profile/css/manage.css' %}" rel="stylesheet">
+    <link href="{% static 'extract/css/view_extract.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block 'body' %}
+
+    <div class="container">
+        <br>
+        <br>
+        <p class="fonte-destaque">Set Planning</p>
+        <div class="card">
+        
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Value</th>
+                    <th>Action</th>
+                </tr>
+
+                {% for category in categories %}
+                    <tr class="linha">
+                        <td>{{category}}</td>
+                        <td><input type="number" id="category-value-{{category.id}}" class="form-control" value="{{category.planning_value|floatformat:2}}"></td>
+                        <td><button onclick="update_cateogry_planning_value({{category.id}})" style="width: 100%;" class="botao-secundario">Save</button></td>         
+                    </tr>
+                {% endfor %}
+                
+
+            </table>
+        
+
+        </div>
+    </div>
+
+    <script>
+        function update_cateogry_planning_value(id){
+            value = document.getElementById('category-value-'+id).value
+            console.log(value)
+
+            fetch('/planning/update_category_value/'+id, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({new_value: value})
+            }).then(function(result){
+                return result.json()
+            }).then(function(data){
+                console.log(data)
+            })
+        }
+    </script>
+
+
+{% endblock %}

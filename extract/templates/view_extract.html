@@ -1,0 +1,97 @@
+{% extends 'bases/base.html' %}
+{% load static %}
+{% block 'head' %}
+
+    <link href="{% static 'profile/css/home.css' %}" rel="stylesheet">
+    <link href="{% static 'profile/css/manage.css' %}" rel="stylesheet">
+    <link href="{% static 'extract/css/view_extract.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+{% block 'body' %}
+    <br>
+    <br>
+    <div class='container'>
+        <form action="{% url 'view_extract' %}" method="GET">
+        <div class="row">
+            
+            <div class="col-md">
+                <label>Account</label>
+                <select name="account" class="form-select">
+                    {% for account in accounts %}
+                        <option value="{{account.id}}">{{account.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md">
+                <label>Category</label>
+                <select name="category" class="form-select">
+                    {% for category in categories %}
+                        <option value="{{category.id}}">{{category}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md">
+                <label>Period</label>
+                <select name="period" class="form-select">
+                    <option value="day">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                    <option value="all">All Time</option>
+                </select>
+            </div>
+        
+            
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+                <input style="width: 100%" type="submit" class="botao-principal" value="Filtrar">
+                
+            </div>
+            </form>
+            <div class="col-md-2">
+                <a href="{% url 'export_extract'%}" type="submit" class="botao-secundario">Export extract</a>
+            </div>
+        </div>
+        <br>
+        <br>
+
+
+        <div class="card">
+            
+                <table>
+                    <tr>
+                        <th>Account</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Input/Output</th>
+                        
+                    </tr>
+                    {% for input_output in inputs_outputs %}
+                        <tr class="linha">
+                            <td width="10%">{{input_output.account}}</td>
+                            <td>{{input_output.category}}</td>
+                            <td>{{input_output.date}}</td>
+                            <td>
+                            {% if input_output.type == 'O'%}
+                                <img width="20%" src="{% static 'profile/img/saidas.png' %}">
+                            {% else %}
+                                <img width="20%" src="{% static 'profile/img/entradas.png' %}">
+                            {% endif %}
+                            
+                            </td>
+                            <td>R$ {{input_output.value}}</td>
+                            
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            
+        </div>
+    </div>
+{% endblock %}
