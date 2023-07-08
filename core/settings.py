@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userProfile',
     'extract',
-    'planning'
+    'planning',
+    'bills'
 ]
 
 MIDDLEWARE = [
