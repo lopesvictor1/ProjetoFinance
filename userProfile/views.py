@@ -5,6 +5,7 @@ from .models import Account, Category
 from django.contrib.messages import constants as message_constants
 from django.db.models import Sum
 from . import utils
+from extract.models import Inputs_outputs
 
 
 
@@ -93,3 +94,19 @@ def update_category(request, pk):
     category.save()
     
     return redirect('manage')
+
+
+def dashboard(request):
+    data = {}
+    catagories= Category.objects.all()
+
+    for category in catagories:
+        ios = Inputs_outputs.objects.filter(category=category)
+        total = 0
+        for io in ios:
+            total += io.value
+        data[category.name] = total
+    
+    context = {'labels' : list(data.keys()), 'values': list(data.values())}
+        
+    return render(request, 'dashboard.html', context)
